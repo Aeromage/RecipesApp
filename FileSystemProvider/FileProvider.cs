@@ -1,6 +1,6 @@
-﻿namespace DataProvider.FileProvider;
+﻿namespace FileSystemProvider;
 
-public class FileSystemProvider : IFileSystemProvider
+public class FileProvider : IFileProvider
 {
     public bool Exists(string filename)
     {
@@ -18,7 +18,7 @@ public class FileSystemProvider : IFileSystemProvider
     {
         var buffer = new byte[stream.Length];
         _ = stream.Read(buffer, 0, (int)stream.Length);
-        using var writer = new StreamWriter(filename, false);
+        using var writer = new StreamWriter(filename);
         writer.WriteLine(System.Text.Encoding.UTF8.GetString(buffer));
     }
 }

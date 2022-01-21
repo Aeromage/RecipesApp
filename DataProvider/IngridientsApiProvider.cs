@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using DataProvider.FileProvider;
 using DataProvider.JsonDataTypes;
+using FileSystemProvider;
 using Microsoft.Extensions.Configuration;
 
 namespace DataProvider;
@@ -8,8 +8,8 @@ namespace DataProvider;
 public class IngridientsApiProvider
 {
     private readonly HttpClient _httpClient = new();
-    private readonly IFileSystemProvider _provider = new FileSystemProvider();
-    private const string FilePath = "ingridients.json";
+    private readonly IFileProvider _provider = new FileProvider();
+    private const string FilePath = @"..\..\..\..\ingridients.json";
 
     public IEnumerable<DishIngridient>? GetIngridients()
     {
@@ -18,7 +18,7 @@ public class IngridientsApiProvider
             var inputStream = _provider.Read(FilePath);
             return JsonSerializer.Deserialize(inputStream, typeof(List<DishIngridient>)) as List<DishIngridient>;
         }
-        var builder = new ConfigurationBuilder().AddJsonFile("jsconfig.json");
+        var builder = new ConfigurationBuilder().AddJsonFile(@"..\..\..\..\jsconfig.json");
         var cfg = builder.Build();
         var endPoint = cfg["endPoint"];
         var response = _httpClient.GetAsync(endPoint).Result;
@@ -37,17 +37,16 @@ public class IngridientsApiProvider
                     Amount = 100,
                     Name = x.Description,
                     Unit = "Grams",
-                    Nutrients = x.Nutrients
-                                       .Where(n => n.Name is "Total lipid (fat)"
-                                       or "Protein"
-                                       or "Carbohydrate, by summation"
-                                       or "Carbohydrate, by difference")
-                                       .Select(n => new IngridientNutrient()
-                                       {
-                                           Amount = n.Amount,
-                                           Name = n.Name,
-                                           UnitName = n.UnitName
-                                       })
+                    Nutrients = x.Nutrients.Where(n => n.Name is "Total lipid (fat)"
+                                           or "Protein"
+                                           or "Carbohydrate, by summation"
+                                           or "Carbohydrate, by difference")
+                                           .Select(n => new IngridientNutrient()
+                                           {
+                                               Amount = n.Amount,
+                                               Name = n.Name,
+                                               UnitName = n.UnitName
+                                           })
                 });
                 var formattesJson = JsonSerializer.Serialize(formattedList.ToList(), typeof(List<DishIngridient>));
                 _provider.Write(FilePath, new MemoryStream(System.Text.Encoding.UTF8.GetBytes(formattesJson)));

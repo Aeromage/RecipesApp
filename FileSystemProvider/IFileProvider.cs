@@ -1,6 +1,6 @@
-﻿namespace DataProvider.FileProvider;
+﻿namespace FileSystemProvider;
 
-public interface IFileSystemProvider
+public interface IFileProvider
 {
     bool Exists(string filename);
     Stream Read(string filename);
