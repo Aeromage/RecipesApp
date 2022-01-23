@@ -1,4 +1,6 @@
-﻿namespace RecipeManagement.RecipeDataTypes;
+﻿using System.Text.Json.Serialization;
+
+namespace RecipeManagement.RecipeDataTypes;
 
 public class Recipe
 {
@@ -8,8 +10,11 @@ public class Recipe
     //Carbs, fats and protein are calculated for 100 grams
     [NonSerialized()] public const double StandartPortion = 100D;
 
+    [JsonPropertyName("recipeName")]
     public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("recipeDescription")]
     public string Description { get; set; } = string.Empty;
+    [JsonPropertyName("recipeIngridients")]
     public List<RecipeIngridient> Ingridients { get; set; } = new();
 
     public Dictionary<string, double> GetNutritionalValue()
@@ -24,5 +29,11 @@ public class Recipe
             {Carbo, carbs}
         };
     }
+    public override string ToString()
+    {
+        return $"{Name}";
+    }
 }
+
+
 

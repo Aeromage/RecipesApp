@@ -2,27 +2,26 @@
 using RecipeManagement.RecipeDataTypes;
 using FileSystemProvider;
 
-namespace RecipeManagement;
+namespace RecipeManagement.RecipeFileManagement;
 
-public class RecipeFileService
+public class RecipeFileService : IRecipeFileService
 {
     private readonly IFileProvider _provider = new FileProvider();
     private const string FilePath = @"..\..\..\..\recipes.json";
+    private static JsonSerializerOptions JsonSerializerOptions { get; } = new() { WriteIndented = true };
 
     public void WriteRecipes(params Recipe[] recipes)
     {
         var jsonRecipes = string.Empty;
         if (!_provider.Exists(FilePath))
         {
-            jsonRecipes = JsonSerializer.Serialize(recipes.ToList());
+            jsonRecipes = JsonSerializer.Serialize(recipes.ToList(), JsonSerializerOptions);
         }
         else
         {
             var savedRecipes = GetRecipes();
             if (savedRecipes != null)
-            {
-                jsonRecipes = JsonSerializer.Serialize(savedRecipes.Union(recipes).ToList());
-            }
+                jsonRecipes = JsonSerializer.Serialize(recipes, JsonSerializerOptions);
         }
         if (jsonRecipes != null)
         {
@@ -39,13 +38,15 @@ public class RecipeFileService
     {
         try
         {
+            if (!_provider.Exists(FilePath))
+                return null;
             using var inputStream = new StreamReader(_provider.Read(FilePath));
             var jsonRecipes = inputStream.ReadToEnd();
-            return JsonSerializer.Deserialize(jsonRecipes, typeof(List<Recipe>)) as List<Recipe>;
+            var returnList = JsonSerializer.Deserialize(jsonRecipes, typeof(List<Recipe>), JsonSerializerOptions) as List<Recipe>;
+            return returnList;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex);
             return null;
         }
     }

@@ -7,18 +7,18 @@ namespace RecipeManagement.RecipeDataTypes;
 public class RecipeIngridient
 {
     [JsonPropertyName("ingridient")]
-    public DishIngridient Ingridient { get; }
+    public FormattedApiIngridient Ingridient { get; set; }
     //Amount in grams
-    [JsonPropertyName("amount")]
-    public double Amount { get; }
+    [JsonPropertyName("ingridientAmount")]
+    public double Amount { get; set; }
 
     public RecipeIngridient()
     {
-        Ingridient = new DishIngridient();
+        Ingridient = new FormattedApiIngridient();
         Amount = 0;
     }
 
-    public RecipeIngridient(DishIngridient ingridient, double amount)
+    public RecipeIngridient(FormattedApiIngridient ingridient, double amount)
     {
         Ingridient = ingridient;
         Amount = amount;
