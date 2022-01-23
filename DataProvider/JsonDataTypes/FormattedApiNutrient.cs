@@ -3,7 +3,7 @@
 namespace DataProvider.JsonDataTypes;
 
 //Format of class we format to work with it
-public class IngridientNutrient
+public class FormattedApiNutrient
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;

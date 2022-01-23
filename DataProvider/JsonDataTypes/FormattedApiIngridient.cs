@@ -3,7 +3,7 @@
 namespace DataProvider.JsonDataTypes;
 
 //Format of class we format to work with it
-public class DishIngridient
+public class FormattedApiIngridient
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
@@ -12,5 +12,10 @@ public class DishIngridient
     [JsonPropertyName("unitName")]
     public string Unit { get; set; } = string.Empty;
     [JsonPropertyName("nutrients")]
-    public IEnumerable<IngridientNutrient> Nutrients { get; set; } = new List<IngridientNutrient>();
+    public IEnumerable<FormattedApiNutrient> Nutrients { get; set; } = new List<FormattedApiNutrient>();
+
+    public override string ToString()
+    {
+        return $"{Name}";
+    }
 }

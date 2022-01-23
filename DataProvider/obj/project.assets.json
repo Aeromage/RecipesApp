@@ -166,6 +166,16 @@
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
         }
+      },
+      "FileSystemProvider/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/FileSystemProvider.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FileSystemProvider.dll": {}
+        }
       }
     }
   },
@@ -447,10 +457,16 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "FileSystemProvider/1.0.0": {
+      "type": "project",
+      "path": "../FileSystemProvider/FileSystemProvider.csproj",
+      "msbuildProject": "../FileSystemProvider/FileSystemProvider.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "FileSystemProvider >= 1.0.0",
       "Microsoft.Extensions.Configuration.Json >= 6.0.0"
     ]
   },
@@ -480,7 +496,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\House\\Desktop\\Projects\\Parik\\RecipesApp\\RecipeApp\\FileSystemProvider\\FileSystemProvider.csproj": {
+              "projectPath": "C:\\Users\\House\\Desktop\\Projects\\Parik\\RecipesApp\\RecipeApp\\FileSystemProvider\\FileSystemProvider.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
